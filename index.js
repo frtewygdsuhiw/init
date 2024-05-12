@@ -1,24 +1,24 @@
-const mergeSort = (arr) => {
-  if (arr.length <= 1) {
-    return arr;
-  }
-  const mid = Math.floor(arr.length / 2);
-  const left = mergeSort(arr.slice(0, mid));
-  const right = mergeSort(arr.slice(mid));
-  return merge(left, right);
-};
-const merge = (left, right) => {
-  let result = [];
-  let leftIndex = 0;
-  let rightIndex = 0;
-  while (leftIndex < left.length && rightIndex < right.length) {
-    if (left[leftIndex] < right[rightIndex]) {
-      result.push(left[leftIndex]);
-      leftIndex++;
-    } else {
-      result.push(right[rightIndex]);
-      rightIndex++;
+function isValidSudoku(board) {
+  const rows = Array(9)
+    .fill()
+    .map(() => new Set());
+  const cols = Array(9)
+    .fill()
+    .map(() => new Set());
+  const boxes = Array(9)
+    .fill()
+    .map(() => new Set());
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      const num = board[i][j];
+      if (num === ".") continue;
+      const boxIndex = Math.floor(i / 3) * 3 + Math.floor(j / 3);
+      if (rows[i].has(num) || cols[j].has(num) || boxes[boxIndex].has(num))
+        return false;
+      rows[i].add(num);
+      cols[j].add(num);
+      boxes[boxIndex].add(num);
     }
   }
-  return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
-};
+  return true;
+}
